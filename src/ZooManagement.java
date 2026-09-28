@@ -1,55 +1,29 @@
 public class ZooManagement {
     public static void main(String[] args) {
-        // Création des animaux avec le constructeur paramétré
         Animal lion = new Animal("Félin", "Simba", 5, true);
         Animal elephant = new Animal("Éléphant", "Dumbo", 10, true);
+        Animal tiger = new Animal("Félin", "Tigrou", 4, true);
+        Animal zebra = new Animal("Equidé", "Zaza", 3, true);
 
-        // Création du tableau d'animaux
-        Animal[] animals = {lion, elephant};
+        Zoo zoo = new Zoo("Parc des animaux", "Paris", 25);
 
-        // Création du zoo avec le constructeur paramétré
-        Zoo zoo = new Zoo("Parc des animaux", "Paris", 20, animals);
+        System.out.println("Ajout Simba : " + zoo.addAnimal(lion));
+        System.out.println("Ajout Dumbo : " + zoo.addAnimal(elephant));
+        System.out.println("Ajout Tigrou : " + zoo.addAnimal(tiger));
+        System.out.println("Ajout Zaza : " + zoo.addAnimal(zebra));
 
-        // Affichage des informations du zoo
-        System.out.println(zoo.zooName + " est situé à " + zoo.city + ".");
-        System.out.println("Nombre de cages : " + zoo.nbrCages);
-        System.out.println("Premier animal : " + zoo.animals[0].name);
+        System.out.println("Zoo plein ? " + zoo.isFull());
+        System.out.println("Indice Simba : " + zoo.searchAnimalByName("Simba"));
+        System.out.println("Indice inconnu : " + zoo.searchAnimalByName("Inconnu"));
 
-        /*
-        // Exemple d'utilisation avec les variables séparées (version avant amélioration)
-        ZooManagement zm = new ZooManagement();
+        zoo.displayAnimals();
+        System.out.println("Suppression Simba : " + zoo.removeAnimal("Simba"));
+        zoo.displayAnimals();
 
-        System.out.println(zm.zooName + " comporte " + zm.nbrCages + " cages.");
+        Zoo zoo2 = new Zoo("Zoo 2", "Lyon", 25);
+        zoo2.addAnimal(new Animal("Félin", "Luna", 6, true));
 
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Entrez le nom du zoo : ");
-        String zooName = scanner.nextLine().trim();
-        while (zooName.isEmpty()) {
-            System.out.print("Erreur : Le nom ne peut pas être vide. Réessayez : ");
-            zooName = scanner.nextLine().trim();
-        }
-        zm.zooName = zooName;
-
-        System.out.print("Entrez le nombre de cages : ");
-        while (true) {
-            if (scanner.hasNextInt()) {
-                int cageNumber = scanner.nextInt();
-                if (cageNumber > 0) {
-                    zm.nbrCages = cageNumber;
-                    break;
-                } else {
-                    System.out.print("Erreur : Le nombre doit être un entier strictement positif. Réessayez : ");
-                }
-            } else {
-                System.out.print("Erreur : Valeur invalide. Entrez un nombre entier : ");
-                scanner.next();
-            }
-        }
-
-        System.out.println(zm.zooName + " comporte " + zm.nbrCages + " cages.");
-
-        scanner.close();
-        */
+        Zoo largerZoo = zoo.compareTo(zoo2);
+        System.out.println("Zoo le plus rempli : " + largerZoo.getZooName());
     }
 }
