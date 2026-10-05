@@ -5,19 +5,15 @@ public class Zoo {
 
     private final int nbrCages;
     private final Animal[] animals;
-    private final String zooName;
-    private final String city;
+    private String zooName = "Zoo";
+    private String city;
 
     public Zoo(String zooName, String city) {
         this(zooName, city, MAX_CAGES);
     }
 
     public Zoo(String zooName, String city, int nbrCages) {
-        if (zooName == null || zooName.trim().isEmpty()) {
-            throw new IllegalArgumentException("Le nom du zoo ne peut pas être vide.");
-        }
-
-        this.zooName = zooName;
+        setZooName(zooName);
         this.city = city;
         this.nbrCages = Math.min(Math.max(nbrCages, 1), MAX_CAGES);
         this.animals = new Animal[this.nbrCages];
@@ -113,7 +109,28 @@ public class Zoo {
         return zooName;
     }
 
+    public boolean setZooName(String zooName) {
+        if (zooName == null || zooName.trim().isEmpty()) {
+            return false;
+        }
+
+        this.zooName = zooName;
+        return true;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     public int getNbrCages() {
         return nbrCages;
+    }
+
+    public Animal[] getAnimals() {
+        return animals.clone();
     }
 }
