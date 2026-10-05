@@ -1,3 +1,8 @@
+package main;
+
+import entities.Animal;
+import entities.Zoo;
+
 public class ZooManagement {
     public static void main(String[] args) {
         Animal lion = new Animal("Félin", "Simba", 5, true);
@@ -12,7 +17,7 @@ public class ZooManagement {
         System.out.println("Ajout Tigrou : " + zoo.addAnimal(tiger));
         System.out.println("Ajout Zaza : " + zoo.addAnimal(zebra));
 
-        System.out.println("Zoo plein ? " + zoo.isFull());
+        System.out.println("Zoo plein ? " + zoo.isZooFull());
         System.out.println("Indice Simba : " + zoo.searchAnimalByName("Simba"));
         System.out.println("Indice inconnu : " + zoo.searchAnimalByName("Inconnu"));
 

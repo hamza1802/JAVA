@@ -1,16 +1,22 @@
+package entities;
+
 public class Zoo {
     public static final int MAX_CAGES = 25;
 
     private final int nbrCages;
-    private Animal[] animals;
-    private String zooName;
-    private String city;
+    private final Animal[] animals;
+    private final String zooName;
+    private final String city;
 
     public Zoo(String zooName, String city) {
         this(zooName, city, MAX_CAGES);
     }
 
     public Zoo(String zooName, String city, int nbrCages) {
+        if (zooName == null || zooName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Le nom du zoo ne peut pas être vide.");
+        }
+
         this.zooName = zooName;
         this.city = city;
         this.nbrCages = Math.min(Math.max(nbrCages, 1), MAX_CAGES);
@@ -18,11 +24,11 @@ public class Zoo {
     }
 
     public boolean addAnimal(Animal animal) {
-        if (animal == null || isFull()) {
+        if (animal == null || isZooFull()) {
             return false;
         }
 
-        if (searchAnimalByName(animal.name) != -1) {
+        if (searchAnimalByName(animal.getName()) != -1) {
             return false;
         }
 
@@ -44,7 +50,7 @@ public class Zoo {
 
         for (Animal animal : animals) {
             if (animal != null) {
-                System.out.println(animal.name + " (" + animal.family + ", " + animal.age + " ans)");
+                System.out.println(animal.getName() + " (" + animal.getFamily() + ", " + animal.getAge() + " ans)");
             }
         }
     }
@@ -55,7 +61,7 @@ public class Zoo {
         }
 
         for (int i = 0; i < animals.length; i++) {
-            if (animals[i] != null && animals[i].name.equalsIgnoreCase(animalName)) {
+            if (animals[i] != null && animals[i].getName().equalsIgnoreCase(animalName)) {
                 return i;
             }
         }
@@ -77,8 +83,12 @@ public class Zoo {
         return true;
     }
 
-    public boolean isFull() {
+    public boolean isZooFull() {
         return getAnimalCount() >= nbrCages;
+    }
+
+    public boolean isFull() {
+        return isZooFull();
     }
 
     public Zoo compareTo(Zoo otherZoo) {
