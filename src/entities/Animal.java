@@ -1,10 +1,13 @@
 package entities;
 
 public class Animal {
-    private String family;
-    private String name;
-    private int age;
-    private Boolean isMammal;
+    protected String family;
+    protected String name;
+    protected int age;
+    protected Boolean isMammal;
+
+    public Animal() {
+    }
 
     public Animal(String family, String name, int age, Boolean isMammal) {
         this.family = family;
@@ -57,5 +60,10 @@ public class Animal {
 
     public void setIsMammal(Boolean isMammal) {
         this.isMammal = isMammal;
+    }
+
+    @Override
+    public String toString() {
+        return "family=" + family + ", name=" + name + ", age=" + age + ", isMammal=" + isMammal;
     }
 }
