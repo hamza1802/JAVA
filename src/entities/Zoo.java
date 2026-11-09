@@ -1,15 +1,22 @@
 package entities;
 
+import exceptions.InvalidAgeException;
+import exceptions.ZooFullException;
+
 public class Zoo {
     public static final int MAX_CAGES = 25;
+    public static final int NUMBER_OF_CAGES = 3;
+    public static final int MAX_AQUATIC_ANIMALS = 10;
 
     private final int nbrCages;
     private final Animal[] animals;
+    private final Aquatic[] aquaticAnimals;
+    private int nbrAquatics;
     private String zooName = "Zoo";
     private String city;
 
     public Zoo(String zooName, String city) {
-        this(zooName, city, MAX_CAGES);
+        this(zooName, city, NUMBER_OF_CAGES);
     }
 
     public Zoo(String zooName, String city, int nbrCages) {
@@ -17,25 +24,89 @@ public class Zoo {
         this.city = city;
         this.nbrCages = Math.min(Math.max(nbrCages, 1), MAX_CAGES);
         this.animals = new Animal[this.nbrCages];
+        this.aquaticAnimals = new Aquatic[MAX_AQUATIC_ANIMALS];
+        this.nbrAquatics = 0;
     }
 
-    public boolean addAnimal(Animal animal) {
-        if (animal == null || isZooFull()) {
-            return false;
+    public void addAnimal(Animal animal) throws ZooFullException, InvalidAgeException {
+        if (animal == null) {
+            return;
+        }
+
+        if (animal.getAge() < 0) {
+            throw new InvalidAgeException("Âge d’animal invalide : l’âge ne peut pas être négatif (" + animal.getAge() + ").");
+        }
+
+        if (getAnimalCount() >= nbrCages) {
+            throw new ZooFullException("Le zoo est plein, impossible d’ajouter un nouvel animal.");
         }
 
         if (searchAnimalByName(animal.getName()) != -1) {
-            return false;
+            System.out.println("L'animal " + animal.getName() + " existe déjà dans le zoo.");
+            return;
         }
 
         for (int i = 0; i < animals.length; i++) {
             if (animals[i] == null) {
                 animals[i] = animal;
-                return true;
+                System.out.println("Animal " + animal.getName() + " ajouté avec succès !");
+                return;
+            }
+        }
+    }
+
+    public void addAquaticAnimal(Aquatic aquatic) {
+        if (aquatic == null) {
+            return;
+        }
+
+        if (nbrAquatics < aquaticAnimals.length) {
+            aquaticAnimals[nbrAquatics] = aquatic;
+            nbrAquatics++;
+        } else {
+            System.out.println("Le zoo aquatique est plein (maximum " + MAX_AQUATIC_ANIMALS + " animaux aquatiques).");
+        }
+    }
+
+    public void displayAllSwims() {
+        for (int i = 0; i < nbrAquatics; i++) {
+            if (aquaticAnimals[i] != null) {
+                aquaticAnimals[i].swim();
+            }
+        }
+    }
+
+    public float maxPenguinSwimmingDepth() {
+        float maxDepth = 0.0f;
+        boolean found = false;
+
+        for (int i = 0; i < nbrAquatics; i++) {
+            if (aquaticAnimals[i] instanceof Penguin) {
+                Penguin penguin = (Penguin) aquaticAnimals[i];
+                if (!found || penguin.getSwimmingDepth() > maxDepth) {
+                    maxDepth = penguin.getSwimmingDepth();
+                    found = true;
+                }
             }
         }
 
-        return false;
+        return maxDepth;
+    }
+
+    public void displayNumberOfAquaticsByType() {
+        int nbrDolphins = 0;
+        int nbrPenguins = 0;
+
+        for (int i = 0; i < nbrAquatics; i++) {
+            if (aquaticAnimals[i] instanceof Dolphin) {
+                nbrDolphins++;
+            } else if (aquaticAnimals[i] instanceof Penguin) {
+                nbrPenguins++;
+            }
+        }
+
+        System.out.println("Nombre de dauphins : " + nbrDolphins);
+        System.out.println("Nombre de pingouins : " + nbrPenguins);
     }
 
     public void displayAnimals() {
@@ -132,5 +203,13 @@ public class Zoo {
 
     public Animal[] getAnimals() {
         return animals.clone();
+    }
+
+    public Aquatic[] getAquaticAnimals() {
+        return aquaticAnimals;
+    }
+
+    public int getNbrAquatics() {
+        return nbrAquatics;
     }
 }

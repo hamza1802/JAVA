@@ -1,17 +1,19 @@
 package entities;
 
 public class Animal {
-    private String family;
-    private String name;
-    private int age;
-    private Boolean isMammal;
+    protected String family;
+    protected String name;
+    protected int age;
+    protected Boolean isMammal;
+
+    public Animal() {
+    }
 
     public Animal(String family, String name, int age, Boolean isMammal) {
         this.family = family;
         this.name = name;
-        this.age = 0;
+        this.age = age;
         this.isMammal = isMammal;
-        setAge(age);
     }
 
     public String getFamily() {
@@ -35,12 +37,8 @@ public class Animal {
     }
 
     public boolean setAge(int age) {
-        if (age < 0) {
-            return false;
-        }
-
         this.age = age;
-        return true;
+        return age >= 0;
     }
 
     public Boolean getIsMammal() {
@@ -57,5 +55,10 @@ public class Animal {
 
     public void setIsMammal(Boolean isMammal) {
         this.isMammal = isMammal;
+    }
+
+    @Override
+    public String toString() {
+        return "family=" + family + ", name=" + name + ", age=" + age + ", isMammal=" + isMammal;
     }
 }
